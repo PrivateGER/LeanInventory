@@ -10,12 +10,12 @@ from starlette import status
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 
-
 from ldap3 import Server, Connection, ALL
 
 app = FastAPI()
 
 JWT_SECRET = os.environ["JWT_SECRET"]
+
 
 def generate_system_jwt():
     return jwt.encode(payload={
@@ -24,13 +24,13 @@ def generate_system_jwt():
         "iat": int(time.time()),
         "iss": 'LeanInventory',
         "https://hasura.io/jwt/claims": {
-          "x-hasura-allowed-roles": ["admin"],
-          "x-hasura-user-id": "system",
-          "x-hasura-default-role": "admin",
-          "x-hasura-role": "admin"
+            "x-hasura-allowed-roles": ["admin"],
+            "x-hasura-user-id": "system",
+            "x-hasura-default-role": "admin",
+            "x-hasura-role": "admin"
         },
         "exp": int(time.time()) + 60 * 60
-      }, algorithm="HS256", key=JWT_SECRET)
+    }, algorithm="HS256", key=JWT_SECRET)
 
 
 def verify_ldap_credentials(username, user_password):
@@ -79,6 +79,7 @@ def verify_ldap_credentials(username, user_password):
         admin_conn.unbind()
         user_conn.unbind()
 
+
 @app.post("/hasura/syncusers", tags=["auth"])
 def sync_users():
     # Get all users from LDAP
@@ -104,14 +105,22 @@ def sync_users():
 
         users.append(user)
 
+    counter = 0
+
+    def label():
+        nonlocal counter
+        counter += 1
+        return counter
+
     query = "mutation userSync {\n"
     for user in users:
-        query += f'\"{user["username"]}\": insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
+        query += f'{label()}: insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
     query += "}"
 
     query = gql(query)
 
-    transport = AIOHTTPTransport(url="http://graphql-engine:8080/v1/graphql", headers={"Authorization": f"Bearer {generate_system_jwt()}"})
+    transport = AIOHTTPTransport(url="http://graphql-engine:8080/v1/graphql",
+                                 headers={"Authorization": f"Bearer {generate_system_jwt()}"})
 
     client = Client(transport=transport, fetch_schema_from_transport=True)
 
@@ -149,12 +158,12 @@ async def hasura_login(
         "iat": int(time.time()),
         "iss": 'LeanInventory',
         "https://hasura.io/jwt/claims": {
-          "x-hasura-allowed-roles": ["admin"],
-          "x-hasura-user-id": username,
-          "x-hasura-default-role": "admin",
-          "x-hasura-role": "admin"
+            "x-hasura-allowed-roles": ["admin"],
+            "x-hasura-user-id": username,
+            "x-hasura-default-role": "admin",
+            "x-hasura-role": "admin"
         },
         "exp": int(time.time()) + 86400
-      }, algorithm="HS256", key=JWT_SECRET)
+    }, algorithm="HS256", key=JWT_SECRET)
 
     return {"accessToken": user_jwt}
