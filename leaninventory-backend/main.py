@@ -93,12 +93,12 @@ def sync_users():
         print(f"Admin bind exception: {e}")
         return False
 
-    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], '(objectClass=person)', attributes=['uid', 'cn'])
+    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], '(objectClass=person)', attributes=['uid', 'sAMAccountName'])
 
     users = []
     for entry in admin_conn.entries:
         user = {
-            "username": entry.uid.value,
+            "username": entry.sAMAccountName.value,
             "admin": False
         }
 
