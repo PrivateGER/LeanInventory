@@ -42,7 +42,6 @@ def verify_ldap_credentials(username, user_password):
     :return: True if the credentials are verified; False otherwise.
     """
     server = Server(os.environ["LDAP_SERVER"], get_info=ALL)
-    print(server)
 
     # First, bind as admin to the LDAP server
     try:
@@ -55,7 +54,7 @@ def verify_ldap_credentials(username, user_password):
         return False
 
     # Search for the user's DN
-    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], f'(uid={username})', attributes=['distinguishedName'])
+    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], f'(sAMAccountName={username})', attributes=['distinguishedName'])
 
     if len(admin_conn.entries) != 1:
         print("User not found.")
@@ -130,9 +129,6 @@ async def hasura_login(
     # Check if username and password are in the payload
     username = payload.get("username")
     password = payload.get("password")
-
-    print(username)
-    print(password)
 
     if not username or not password:
         raise HTTPException(
