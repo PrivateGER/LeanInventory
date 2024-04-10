@@ -1,0 +1,15 @@
+- name: Sync User List
+  webhook: http://action-handler/hasura/syncusers
+  schedule: 0 0 * * *
+  include_in_metadata: true
+  payload: {}
+  comment: synchronizes lists of users from AD with users table
+  request_transform:
+    body:
+      action: transform
+      template: |-
+        {
+          "payload": {{$body.payload}}
+        }
+    template_engine: Kriti
+    version: 2

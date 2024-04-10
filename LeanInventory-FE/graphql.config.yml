@@ -1,0 +1,10 @@
+schema: ./schema.graphql
+extensions:
+  endpoints:
+    Default GraphQL Endpoint:
+      url: http://localhost:8080/v1/graphql
+      headers:
+        user-agent: JS GraphQL
+        X-Hasura-Access-Key: 'myadminsecretkey'
+      introspect: false
+

@@ -1,0 +1,268 @@
+- name: allowed-queries
+  definition:
+    queries:
+      - name: users_by_pk
+        query: |
+          query users_by_pk ($username: String!) {
+            users_by_pk(username: $username) {
+              admin
+              username
+            }
+          }
+      - name: users
+        query: |
+          query users {
+            users {
+              admin
+              username
+            }
+          }
+      - name: insert_users_one
+        query: |
+          mutation insert_users_one ($object: users_insert_input!) {
+            insert_users_one(object: $object) {
+              admin
+              username
+            }
+          }
+      - name: update_users_by_pk
+        query: |
+          mutation update_users_by_pk ($username: String!, $object: users_set_input!) {
+            update_users_by_pk(pk_columns: {username:$username}, _set: $object) {
+              admin
+              username
+            }
+          }
+      - name: delete_users_by_pk
+        query: |
+          mutation delete_users_by_pk ($username: String!) {
+            delete_users_by_pk(username: $username) {
+              admin
+              username
+            }
+          }
+      - name: orders_by_pk
+        query: |
+          query orders_by_pk ($id: uuid!) {
+            orders_by_pk(id: $id) {
+              count
+              created_at
+              id
+              item_id
+            }
+          }
+      - name: orders
+        query: |
+          query orders {
+            orders {
+              count
+              created_at
+              id
+              item_id
+            }
+          }
+      - name: insert_orders_one
+        query: |
+          mutation insert_orders_one ($object: orders_insert_input!) {
+            insert_orders_one(object: $object) {
+              count
+              created_at
+              id
+              item_id
+            }
+          }
+      - name: update_orders_by_pk
+        query: |
+          mutation update_orders_by_pk ($id: uuid!, $object: orders_set_input!) {
+            update_orders_by_pk(pk_columns: {id:$id}, _set: $object) {
+              count
+              created_at
+              id
+              item_id
+            }
+          }
+      - name: delete_orders_by_pk
+        query: |
+          mutation delete_orders_by_pk ($id: uuid!) {
+            delete_orders_by_pk(id: $id) {
+              count
+              created_at
+              id
+              item_id
+            }
+          }
+      - name: items_by_pk
+        query: |
+          query items_by_pk ($id: uuid!) {
+            items_by_pk(id: $id) {
+              categories
+              created_at
+              description
+              id
+              name
+              price
+              stock_available
+              stock_minimum
+              stock_reserved
+              updated_at
+            }
+          }
+      - name: items
+        query: |
+          query items {
+            items {
+              categories
+              created_at
+              description
+              id
+              name
+              price
+              stock_available
+              stock_minimum
+              stock_reserved
+              updated_at
+            }
+          }
+      - name: insert_items_one
+        query: |
+          mutation insert_items_one ($object: items_insert_input!) {
+            insert_items_one(object: $object) {
+              categories
+              created_at
+              description
+              id
+              name
+              price
+              stock_available
+              stock_minimum
+              stock_reserved
+              updated_at
+            }
+          }
+      - name: update_items_by_pk
+        query: |
+          mutation update_items_by_pk ($id: uuid!, $object: items_set_input!) {
+            update_items_by_pk(pk_columns: {id:$id}, _set: $object) {
+              categories
+              created_at
+              description
+              id
+              name
+              price
+              stock_available
+              stock_minimum
+              stock_reserved
+              updated_at
+            }
+          }
+      - name: delete_items_by_pk
+        query: |
+          mutation delete_items_by_pk ($id: uuid!) {
+            delete_items_by_pk(id: $id) {
+              categories
+              created_at
+              description
+              id
+              name
+              price
+              stock_available
+              stock_minimum
+              stock_reserved
+              updated_at
+            }
+          }
+      - name: item_ownership_by_pk
+        query: |
+          query item_ownership_by_pk ($item_id: uuid!, $user_id: String!) {
+            item_ownership_by_pk(item_id: $item_id, user_id: $user_id) {
+              item_id
+              quantity
+              user_id
+            }
+          }
+      - name: item_ownership
+        query: |
+          query item_ownership {
+            item_ownership {
+              item_id
+              quantity
+              user_id
+            }
+          }
+      - name: insert_item_ownership_one
+        query: |
+          mutation insert_item_ownership_one ($object: item_ownership_insert_input!) {
+            insert_item_ownership_one(object: $object) {
+              item_id
+              quantity
+              user_id
+            }
+          }
+      - name: update_item_ownership_by_pk
+        query: |
+          mutation update_item_ownership_by_pk ($item_id: uuid!, $user_id: String!, $object: item_ownership_set_input!) {
+            update_item_ownership_by_pk(pk_columns: {item_id:$item_id,user_id:$user_id}, _set: $object) {
+              item_id
+              quantity
+              user_id
+            }
+          }
+      - name: delete_item_ownership_by_pk
+        query: |
+          mutation delete_item_ownership_by_pk ($item_id: uuid!, $user_id: String!) {
+            delete_item_ownership_by_pk(item_id: $item_id, user_id: $user_id) {
+              item_id
+              quantity
+              user_id
+            }
+          }
+      - name: audit_entries_by_pk
+        query: |
+          query audit_entries_by_pk ($id: Int!) {
+            audit_entries_by_pk(id: $id) {
+              created_at
+              description
+              id
+              user
+            }
+          }
+      - name: audit_entries
+        query: |
+          query audit_entries {
+            audit_entries {
+              created_at
+              description
+              id
+              user
+            }
+          }
+      - name: insert_audit_entries_one
+        query: |
+          mutation insert_audit_entries_one ($object: audit_entries_insert_input!) {
+            insert_audit_entries_one(object: $object) {
+              created_at
+              description
+              id
+              user
+            }
+          }
+      - name: update_audit_entries_by_pk
+        query: |
+          mutation update_audit_entries_by_pk ($id: Int!, $object: audit_entries_set_input!) {
+            update_audit_entries_by_pk(pk_columns: {id:$id}, _set: $object) {
+              created_at
+              description
+              id
+              user
+            }
+          }
+      - name: delete_audit_entries_by_pk
+        query: |
+          mutation delete_audit_entries_by_pk ($id: Int!) {
+            delete_audit_entries_by_pk(id: $id) {
+              created_at
+              description
+              id
+              user
+            }
+          }

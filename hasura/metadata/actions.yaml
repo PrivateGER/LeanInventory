@@ -1,0 +1,25 @@
+actions:
+  - name: login
+    definition:
+      kind: synchronous
+      handler: http://action-handler/auth/hasura
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "username": {{$body.input.credentials.username}},
+              "password": {{$body.input.credentials.password}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: it_internal
+      - role: public
+custom_types:
+  enums: []
+  input_objects:
+    - name: LoginInput
+  objects:
+    - name: LoginOutput
+  scalars: []

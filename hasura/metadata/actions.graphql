@@ -1,0 +1,15 @@
+type Mutation {
+  login(
+    credentials: LoginInput!
+  ): LoginOutput
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+type LoginOutput {
+  accessToken: String!
+}
+

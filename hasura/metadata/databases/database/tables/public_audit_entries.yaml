@@ -1,0 +1,23 @@
+table:
+  name: audit_entries
+  schema: public
+object_relationships:
+  - name: subject
+    using:
+      manual_configuration:
+        column_mapping:
+          user: username
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: public
+select_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - id
+        - description
+        - created_at
+        - user
+      filter: {}
+    comment: ""

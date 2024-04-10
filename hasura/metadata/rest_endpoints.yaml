@@ -1,0 +1,225 @@
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: audit_entries
+  methods:
+    - GET
+  name: audit_entries
+  url: audit_entries
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: insert_audit_entries_one
+  methods:
+    - POST
+  name: insert_audit_entries_one
+  url: audit_entries
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: audit_entries_by_pk
+  methods:
+    - GET
+  name: audit_entries_by_pk
+  url: audit_entries/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: update_audit_entries_by_pk
+  methods:
+    - POST
+  name: update_audit_entries_by_pk
+  url: audit_entries/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: delete_audit_entries_by_pk
+  methods:
+    - DELETE
+  name: delete_audit_entries_by_pk
+  url: audit_entries/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: item_ownership
+  methods:
+    - GET
+  name: item_ownership
+  url: item_ownership
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: insert_item_ownership_one
+  methods:
+    - POST
+  name: insert_item_ownership_one
+  url: item_ownership
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: item_ownership_by_pk
+  methods:
+    - GET
+  name: item_ownership_by_pk
+  url: item_ownership/:item_id/:user_id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: update_item_ownership_by_pk
+  methods:
+    - POST
+  name: update_item_ownership_by_pk
+  url: item_ownership/:item_id/:user_id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: delete_item_ownership_by_pk
+  methods:
+    - DELETE
+  name: delete_item_ownership_by_pk
+  url: item_ownership/:item_id/:user_id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: items
+  methods:
+    - GET
+  name: items
+  url: items
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: insert_items_one
+  methods:
+    - POST
+  name: insert_items_one
+  url: items
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: items_by_pk
+  methods:
+    - GET
+  name: items_by_pk
+  url: items/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: update_items_by_pk
+  methods:
+    - POST
+  name: update_items_by_pk
+  url: items/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: delete_items_by_pk
+  methods:
+    - DELETE
+  name: delete_items_by_pk
+  url: items/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: orders
+  methods:
+    - GET
+  name: orders
+  url: orders
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: insert_orders_one
+  methods:
+    - POST
+  name: insert_orders_one
+  url: orders
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: orders_by_pk
+  methods:
+    - GET
+  name: orders_by_pk
+  url: orders/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: update_orders_by_pk
+  methods:
+    - POST
+  name: update_orders_by_pk
+  url: orders/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: delete_orders_by_pk
+  methods:
+    - DELETE
+  name: delete_orders_by_pk
+  url: orders/:id
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: users
+  methods:
+    - GET
+  name: users
+  url: users
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: insert_users_one
+  methods:
+    - POST
+  name: insert_users_one
+  url: users
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: users_by_pk
+  methods:
+    - GET
+  name: users_by_pk
+  url: users/:username
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: update_users_by_pk
+  methods:
+    - POST
+  name: update_users_by_pk
+  url: users/:username
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: delete_users_by_pk
+  methods:
+    - DELETE
+  name: delete_users_by_pk
+  url: users/:username

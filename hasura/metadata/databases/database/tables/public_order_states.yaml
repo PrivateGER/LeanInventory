@@ -1,0 +1,11 @@
+table:
+  name: order_states
+  schema: public
+is_enum: true
+select_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - ORDER_STATE
+      filter: {}
+    comment: ""

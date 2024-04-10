@@ -1,0 +1,75 @@
+table:
+  name: items
+  schema: public
+array_relationships:
+  - name: orders
+    using:
+      foreign_key_constraint_on:
+        column: item_id
+        table:
+          name: orders
+          schema: public
+  - name: owned_by
+    using:
+      foreign_key_constraint_on:
+        column: item_id
+        table:
+          name: item_ownership
+          schema: public
+insert_permissions:
+  - role: it_internal
+    permission:
+      check: {}
+      columns:
+        - categories
+        - price
+        - stock_available
+        - stock_minimum
+        - stock_reserved
+        - purchase_locations
+        - description
+        - name
+        - created_at
+        - updated_at
+        - id
+    comment: ""
+select_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - categories
+        - created_at
+        - description
+        - id
+        - name
+        - price
+        - purchase_locations
+        - stock_available
+        - stock_minimum
+        - stock_reserved
+        - updated_at
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - categories
+        - price
+        - stock_available
+        - stock_minimum
+        - stock_reserved
+        - purchase_locations
+        - description
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+      check: {}
+    comment: ""
+delete_permissions:
+  - role: it_internal
+    permission:
+      filter: {}
+    comment: ""

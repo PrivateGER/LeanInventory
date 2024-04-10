@@ -1,0 +1,38 @@
+table:
+  name: orders
+  schema: public
+object_relationships:
+  - name: item
+    using:
+      foreign_key_constraint_on: item_id
+insert_permissions:
+  - role: it_internal
+    permission:
+      check: {}
+      columns:
+        - count
+        - created_at
+        - id
+        - item_id
+    comment: ""
+select_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - count
+        - created_at
+        - id
+        - item_id
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: it_internal
+    permission:
+      columns:
+        - count
+        - created_at
+        - id
+        - item_id
+      filter: {}
+      check: {}
+    comment: ""

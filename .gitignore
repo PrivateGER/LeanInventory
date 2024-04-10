@@ -1,0 +1,9 @@
+leaninventory-backend/.idea
+leaninventory-backend/__pycache__
+leaninventory-backend/.venv
+LeanInventory-FE/.idea
+LeanInventory-FE/dist
+LeanInventory-FE/node_modules
+LeanInventory-FE/pnpm-lock.yaml
+LeanInventory-FE/schema.graphql
+
