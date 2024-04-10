@@ -1,16 +1,15 @@
 import os
 import time
+import uuid
 from typing import Any
-
+import random, string
 import jwt
-from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Body
-from ldap3.core.exceptions import LDAPBindError
-from starlette import status
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
-
 from ldap3 import Server, Connection, ALL
+from ldap3.core.exceptions import LDAPBindError
+from starlette import status
 
 app = FastAPI()
 
@@ -105,16 +104,12 @@ def sync_users():
 
         users.append(user)
 
-    counter = 0
-
-    def label():
-        nonlocal counter
-        counter += 1
-        return counter
+    def id():
+        ''.join(random.choices(string.ascii_letters + string.digits, k=20))
 
     query = "mutation userSync {\n"
     for user in users:
-        query += f'{label()}: insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
+        query += f'{id()}: insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
     query += "}"
 
     query = gql(query)
