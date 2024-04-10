@@ -104,7 +104,7 @@ def sync_users():
 
         users.append(user)
 
-    query = "mutation userSync {"
+    query = "mutation userSync {\n"
     for user in users:
         query += f'\"{user["username"]}\": insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
     query += "}"
