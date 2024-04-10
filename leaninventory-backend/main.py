@@ -106,7 +106,7 @@ def sync_users():
 
     query = "mutation userSync {"
     for user in users:
-        query += f'{user["username"]}: insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
+        query += f'\"{user["username"]}\": insert_users(objects: {{username: "{user["username"]}", admin: {str(user["admin"]).lower()}}}, on_conflict: {{constraint: users_pkey, update_columns: admin}}) {{ returning {{ username }} }}\n'
     query += "}"
 
     query = gql(query)
