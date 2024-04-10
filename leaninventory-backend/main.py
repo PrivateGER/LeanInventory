@@ -29,7 +29,7 @@ def generate_system_jwt():
           "x-hasura-default-role": "admin",
           "x-hasura-role": "admin"
         },
-        "exp": int(time.time()) + 60
+        "exp": int(time.time()) + 60 * 60
       }, algorithm="HS256", key=JWT_SECRET)
 
 
