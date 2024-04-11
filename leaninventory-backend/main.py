@@ -122,7 +122,7 @@ def sync_users():
         users.append(user)
 
     def id():
-        return ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+        return ''.join(random.choices(string.ascii_letters, k=20))
 
     query = "mutation userSync {\n"
     for user in users:
