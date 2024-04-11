@@ -15,6 +15,8 @@ app = FastAPI()
 
 JWT_SECRET = os.environ["JWT_SECRET"]
 
+USER_ATTRIBUTE = "sAMAccountName"
+#USER_ATTRIBUTE = "uid"
 
 def generate_system_jwt():
     return jwt.encode(payload={
@@ -53,23 +55,23 @@ def verify_ldap_credentials(username, user_password):
         return False
 
     # Search for the user's DN
-    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], f'(sAMAccountName={username})', attributes=['distinguishedName'])
+    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], f'({USER_ATTRIBUTE}={username})', attributes=['distinguishedName', USER_ATTRIBUTE])
 
     if len(admin_conn.entries) != 1:
         print("User not found.")
         return False
 
-    user_dn = admin_conn.entries[0].distinguishedName.value
+    user_dn = admin_conn.entries[0].entry_dn
 
     # attempt to re-bind with the user's credentials
     try:
         user_conn = Connection(server, user_dn, user_password)
         if user_conn.bind():
             print("User credentials verified.")
-            return True
+            return True, user_dn
         else:
             print("User bind failed.")
-            return False
+            return False, None
     except LDAPBindError as e:
         print(f"User bind exception: {e}")
         return False
@@ -77,6 +79,21 @@ def verify_ldap_credentials(username, user_password):
         # Unbind the connections
         admin_conn.unbind()
         user_conn.unbind()
+
+
+def is_member_of_group(user_dn, group_dn):
+    server = Server(os.environ["LDAP_SERVER"], get_info=ALL)
+    admin_conn = Connection(server, os.environ["LDAP_ADMIN_DN"], os.environ["LDAP_ADMIN_PASSWORD"])
+    admin_conn.bind()
+
+    # Search for the user's DN
+    admin_conn.search(user_dn, '(objectClass=person)', attributes=['memberOf'])
+
+    # Check if the group DN is in the memberOf attribute of the user
+    if 'memberOf' in admin_conn.entries[0]:
+        return group_dn in admin_conn.entries[0]['memberOf'].value
+
+    return False
 
 
 @app.post("/hasura/syncusers", tags=["auth"])
@@ -93,19 +110,19 @@ def sync_users():
         print(f"Admin bind exception: {e}")
         return False
 
-    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], '(objectClass=person)', attributes=['uid', 'sAMAccountName'])
+    admin_conn.search(os.environ["LDAP_USER_BASE_DN"], '(objectClass=person)', attributes=[USER_ATTRIBUTE])
 
     users = []
     for entry in admin_conn.entries:
         user = {
-            "username": entry.sAMAccountName.value,
+            "username": entry[USER_ATTRIBUTE].value,
             "admin": False
         }
 
         users.append(user)
 
     def id():
-        ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=20))
 
     query = "mutation userSync {\n"
     for user in users:
@@ -141,10 +158,19 @@ async def hasura_login(
         )
 
     # LDAP login returning a JWT token
-    if not verify_ldap_credentials(username, password):
+    verified, user_dn = verify_ldap_credentials(username, password)
+    print(verified, user_dn)
+    if not verified:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
+        )
+
+    # Verify membership of IT group
+    if not is_member_of_group(user_dn, os.environ["LDAP_ADMIN_GROUP_NAME"]):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User is not a member of the IT group",
         )
 
     user_jwt = jwt.encode(payload={
@@ -153,10 +179,10 @@ async def hasura_login(
         "iat": int(time.time()),
         "iss": 'LeanInventory',
         "https://hasura.io/jwt/claims": {
-            "x-hasura-allowed-roles": ["admin"],
+            "x-hasura-allowed-roles": ["it_internal"],
             "x-hasura-user-id": username,
-            "x-hasura-default-role": "admin",
-            "x-hasura-role": "admin"
+            "x-hasura-default-role": "it_internal",
+            "x-hasura-role": "it_internal"
         },
         "exp": int(time.time()) + 86400
     }, algorithm="HS256", key=JWT_SECRET)
